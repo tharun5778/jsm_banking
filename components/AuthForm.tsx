@@ -6,8 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {authFormSchema} from '@/lib/utils'
-
-
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -25,6 +23,7 @@ import SignUp from '@/app/(auth)/sign-up/page';
 import SignIn from '@/app/(auth)/sign-in/page';
 import { useRouter } from 'next/navigation';
 import { signIn, signUp } from '@/lib/actions/user.actions';
+import PlaidLink from './PlaidLink';
 
 
 
@@ -52,6 +51,20 @@ const AuthForm = ({type}: {type: string}) => {
         try{
 
             if(type === 'sign-up'){
+
+                const userData = {
+                    firstName: data.firstName!,
+                    lastName: data.lastName!,
+                    address1: data.address1!,
+                    city: data.city!,
+                    state: data.state!,
+                    postalCode: data.postalCode!,
+                    dateOfBirth: data.dateOfBirth!,
+                    ssn: data.ssn!,
+                    email: data.email,
+                    password: data.password
+                }
+
                 const newUser = await signUp(data)
 
                 setUser(newUser);
@@ -106,7 +119,7 @@ const AuthForm = ({type}: {type: string}) => {
         </header>
         {user? (
                     <div className="flex flex-col gap-4">
-                        {/* PlaidLink */}
+                        <PlaidLink user={user} variant="primary"/>
                     </div>
                 ):
                 (
@@ -164,8 +177,7 @@ const AuthForm = ({type}: {type: string}) => {
                         </footer>
                     </>
 
-                )
-        }
+                )}
     </section>
   )
 }
